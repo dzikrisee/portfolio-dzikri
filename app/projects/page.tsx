@@ -1,17 +1,28 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { FaLocationArrow, FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
+import { FaExternalLinkAlt, FaArrowLeft } from 'react-icons/fa';
 import { projects } from '@/data';
 import { Project } from '@/types/project';
 
 const AllProjects = () => {
   const [filter, setFilter] = useState('All');
+  const [mounted, setMounted] = useState(false);
+
   const categories = ['All', 'E-Commerce', 'Organization Website', 'Mobile Application', 'Portfolio'];
 
+  // Fix hydration error
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const filteredProjects: Project[] = filter === 'All' ? projects : projects.filter((project) => project.category === filter);
+
+  if (!mounted) {
+    return null; // Prevent hydration mismatch
+  }
 
   return (
     <main className="relative bg-black-100 flex justify-center items-center flex-col overflow-hidden mx-auto sm:px-10 px-5">
@@ -77,21 +88,17 @@ const AllProjects = () => {
                   {/* Technologies */}
                   <div className="flex flex-wrap gap-2 mb-6">
                     {project.iconLists.slice(0, 4).map((icon, iconIndex) => (
-                      <div key={iconIndex} className="w-8 h-8 rounded-full bg-black border border-white/20 flex items-center justify-center">
+                      <div key={iconIndex} className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center bg-white/5">
                         <img src={icon} alt="tech" className="w-4 h-4" />
                       </div>
                     ))}
-                    {project.iconLists.length > 4 && (
-                      <div className="w-8 h-8 rounded-full bg-white/10 border border-white/20 flex items-center justify-center">
-                        <span className="text-xs text-white">+{project.iconLists.length - 4}</span>
-                      </div>
-                    )}
+                    {project.iconLists.length > 4 && <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center bg-white/5 text-xs text-white-100">+{project.iconLists.length - 4}</div>}
                   </div>
 
-                  {/* Action Buttons */}
+                  {/* Action Buttons - Fix hydration issue dengan struktur yang lebih sederhana */}
                   <div className="flex gap-3">
-                    <Link href={`/projects/${project.slug}`} className="flex-1 bg-purple hover:bg-purple/80 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-300 flex items-center justify-center gap-2">
-                      View Details <FaLocationArrow className="w-3 h-3" />
+                    <Link href={`/projects/${project.slug}`} className="flex-1 block px-4 py-3 bg-purple hover:bg-purple/80 text-white text-center rounded-xl font-medium transition-all duration-300 transform hover:scale-105">
+                      View Details
                     </Link>
 
                     {project.liveUrl && (
@@ -99,9 +106,9 @@ const AllProjects = () => {
                         href={project.liveUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-300 flex items-center justify-center"
+                        className="px-4 py-3 border border-white/20 hover:border-purple text-white-100 hover:text-purple rounded-xl transition-all duration-300 flex items-center justify-center"
                       >
-                        <FaExternalLinkAlt className="w-4 h-4" />
+                        <FaExternalLinkAlt />
                       </a>
                     )}
                   </div>
@@ -111,12 +118,19 @@ const AllProjects = () => {
           ))}
         </div>
 
+        {/* No Projects Found */}
+        {filteredProjects.length === 0 && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-20">
+            <p className="text-white-100 text-lg">No projects found in this category.</p>
+          </motion.div>
+        )}
+
         {/* Back to Home */}
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 0.4 }} className="text-center pb-20">
-          <Link href="/">
-            <button className="px-8 py-4 rounded-xl bg-white/10 hover:bg-white/20 text-white font-medium transition-all duration-300 transform hover:scale-105">← Back to Home</button>
+        <div className="text-center pb-20">
+          <Link href="/" className="inline-block px-8 py-4 bg-white/10 hover:bg-white/20 text-white rounded-xl font-medium transition-all duration-300 transform hover:scale-105">
+            ← Back to Home
           </Link>
-        </motion.div>
+        </div>
       </div>
     </main>
   );

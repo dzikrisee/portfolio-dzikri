@@ -46,7 +46,7 @@ const Experience = () => {
     },
     {
       id: 4,
-      title: 'Event Manager - Core Team',
+      title: 'Event Manager - Staff',
       company: 'Google Developer Group on Campus (GDGoC) UNPAS',
       period: '2024 - Present',
       location: 'Bandung, Indonesia',

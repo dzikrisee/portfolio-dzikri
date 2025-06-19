@@ -4,7 +4,6 @@ import { FaLocationArrow } from 'react-icons/fa6';
 import Link from 'next/link';
 import { projects } from '@/data';
 import { PinContainer } from './ui/Pin';
-import { Project } from '@/types/project';
 
 const RecentProjects = () => {
   return (
@@ -16,57 +15,56 @@ const RecentProjects = () => {
       <div className="flex flex-wrap items-center justify-center p-4 gap-16 mt-10">
         {projects.map((item) => (
           <div className="lg:min-h-[40rem] h-[32rem] flex items-center justify-center sm:w-[28rem] w-[85vw]" key={item.id}>
-            <Link href={`/projects/${item.slug}`}>
-              <PinContainer title={item.pinTitle} href={`/projects/${item.slug}`}>
-                <div className="relative flex items-center justify-center sm:w-[28rem] w-[85vw] overflow-hidden h-[25vh] lg:h-[35vh] mb-10">
-                  <div className="relative w-full h-full overflow-hidden lg:rounded-3xl" style={{ backgroundColor: '#13162D' }}>
-                    <img src="/bg.png" alt="bgimg" className="w-full h-full object-cover" />
-                  </div>
-                  <img src={item.img} alt="cover" className="z-10 absolute inset-0 w-full h-full object-cover object-center lg:rounded-3xl" />
+            {/* Remove Link wrapper and let PinContainer handle navigation */}
+            <PinContainer title={item.pinTitle} href={`/projects/${item.slug}`}>
+              <div className="relative flex items-center justify-center sm:w-[28rem] w-[85vw] overflow-hidden h-[25vh] lg:h-[35vh] mb-10">
+                <div className="relative w-full h-full overflow-hidden lg:rounded-3xl" style={{ backgroundColor: '#13162D' }}>
+                  <img src="/bg.png" alt="bgimg" className="w-full h-full object-cover" />
+                </div>
+                <img src={item.img} alt="cover" className="z-10 absolute inset-0 w-full h-full object-cover object-center lg:rounded-3xl" />
+              </div>
+
+              <h1 className="font-bold lg:text-2xl md:text-xl text-base line-clamp-1">{item.title}</h1>
+
+              <p
+                className="lg:text-xl lg:font-normal font-light text-sm line-clamp-2"
+                style={{
+                  color: '#BEC1DD',
+                  margin: '1vh 0',
+                }}
+              >
+                {item.des}
+              </p>
+
+              <div className="flex items-center justify-between mt-7 mb-3">
+                <div className="flex items-center">
+                  {item.iconLists.map((icon, index) => (
+                    <div
+                      key={index}
+                      className="border border-white/[.2] rounded-full bg-black lg:w-10 lg:h-10 w-8 h-8 flex justify-center items-center"
+                      style={{
+                        transform: `translateX(-${5 * index + 2}px)`,
+                      }}
+                    >
+                      <img src={icon} alt="icon5" className="p-2" />
+                    </div>
+                  ))}
                 </div>
 
-                <h1 className="font-bold lg:text-2xl md:text-xl text-base line-clamp-1">{item.title}</h1>
-
-                <p
-                  className="lg:text-xl lg:font-normal font-light text-sm line-clamp-2"
-                  style={{
-                    color: '#BEC1DD',
-                    margin: '1vh 0',
-                  }}
-                >
-                  {item.des}
-                </p>
-
-                <div className="flex items-center justify-between mt-7 mb-3">
-                  <div className="flex items-center">
-                    {item.iconLists.map((icon, index) => (
-                      <div
-                        key={index}
-                        className="border border-white/[.2] rounded-full bg-black lg:w-10 lg:h-10 w-8 h-8 flex justify-center items-center"
-                        style={{
-                          transform: `translateX(-${5 * index + 2}px)`,
-                        }}
-                      >
-                        <img src={icon} alt="icon5" className="p-2" />
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="flex justify-center items-center">
-                    <p className="flex lg:text-xl md:text-xs text-sm text-purple">View Details</p>
-                    <FaLocationArrow className="ms-3" color="#CBACF9" />
-                  </div>
+                <div className="flex justify-center items-center">
+                  <p className="flex lg:text-xl md:text-xs text-sm text-purple">View Details</p>
+                  <FaLocationArrow className="ms-3" color="#CBACF9" />
                 </div>
-              </PinContainer>
-            </Link>
+              </div>
+            </PinContainer>
           </div>
         ))}
       </div>
 
       {/* View All Projects Button */}
       <div className="flex justify-center mt-16">
-        <Link href="/projects">
-          <button className="px-8 py-4 rounded-xl bg-purple hover:bg-purple/80 text-white font-bold text-lg transition-all duration-300 transform hover:scale-105">View All Projects</button>
+        <Link href="/projects" className="px-8 py-4 rounded-xl bg-purple hover:bg-purple/80 text-white font-bold text-lg transition-all duration-300 transform hover:scale-105">
+          View All Projects
         </Link>
       </div>
     </div>
