@@ -1,7 +1,9 @@
 import React from 'react';
 import Image from 'next/image';
 import { Button } from './ui/MovingBorders';
+import MagicButton from './MagicButton';
 import { motion } from 'framer-motion';
+import { FaDownload } from 'react-icons/fa';
 
 const Profile = () => {
   return (
@@ -28,60 +30,56 @@ const Profile = () => {
             className="flex-1 text-black dark:text-white border-neutral-200 dark:border-slate-800 w-full"
           >
             <div className="flex flex-col lg:flex-row lg:items-center p-8 py-12 md:p-12 lg:p-16 gap-12">
-              {/* Profile Image with Hover Animation */}
-              <motion.div
-                className="relative w-48 h-64 md:w-56 md:h-72 lg:w-64 lg:h-80 rounded-2xl overflow-hidden border-4 border-white/30 backdrop-blur-sm flex-shrink-0 mx-auto lg:mx-0 shadow-2xl"
-                whileHover={{ scale: 1.05 }}
-                transition={{ duration: 0.3 }}
-              >
-                <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-blue-500/10 to-cyan-500/10"></div>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"></div>
-                <Image src="/profile.jpg" alt="Profile Picture" fill className="object-cover object-center relative z-10" priority />
-                {/* Professional Frame Effect */}
-                <div className="absolute inset-0 border-2 border-white/20 rounded-2xl"></div>
-                <div className="absolute -inset-1 bg-gradient-to-r from-purple-500/20 via-blue-500/20 to-cyan-500/20 rounded-2xl blur-sm -z-10"></div>
-              </motion.div>
+              {/* Profile Image with CV Button */}
+              <div className="flex flex-col items-center lg:items-start flex-shrink-0">
+                {/* Profile Image with Hover Animation */}
+                <motion.div className="relative w-48 h-64 md:w-56 md:h-72 lg:w-64 lg:h-80 rounded-2xl overflow-hidden border-4 border-white/30 backdrop-blur-sm shadow-2xl" whileHover={{ scale: 1.05 }} transition={{ duration: 0.3 }}>
+                  <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-blue-500/10 to-cyan-500/10"></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"></div>
+                  <Image src="/profile.jpg" alt="Profile Picture" fill className="object-cover object-center relative z-10" priority />
+                  {/* Professional Frame Effect */}
+                  <div className="absolute inset-0 border-2 border-white/20 rounded-2xl"></div>
+                  <div className="absolute -inset-1 bg-gradient-to-r from-purple-500/20 via-blue-500/20 to-cyan-500/20 rounded-2xl blur-sm -z-10"></div>
+                </motion.div>
+
+                {/* CV Download Button */}
+                <motion.div className="mt-6" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.8 }} viewport={{ once: true }}>
+                  <div
+                    className="relative inline-flex h-12 w-full md:w-60 overflow-hidden rounded-lg p-[1px] focus:outline-none cursor-pointer"
+                    onClick={() => {
+                      const link = document.createElement('a');
+                      link.href = '/cv-dzikri-setiawan.pdf';
+                      link.download = 'CV-Dzikri-Setiawan.pdf';
+                      link.click();
+                    }}
+                  >
+                    <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
+                    <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-lg bg-slate-950 px-7 text-sm font-medium text-white backdrop-blur-3xl gap-2 hover:bg-[#1a1f3a] transition-colors duration-300">
+                      Download CV
+                      <FaDownload />
+                    </span>
+                  </div>
+                </motion.div>
+              </div>
 
               {/* Profile Content with Stagger Animation */}
               <motion.div className="lg:ms-8 flex-1 text-center lg:text-left" initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.4 }} viewport={{ once: true }}>
-                <motion.h2
-                  className="text-center lg:text-start text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.5 }}
-                  viewport={{ once: true }}
-                >
-                  Dzikri Setiawan<span className="text-purple"></span>
+                {/* Name and Title */}
+                <motion.h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.5 }} viewport={{ once: true }}>
+                  Dzikri Setiawan
                 </motion.h2>
 
-                <motion.p
-                  className="text-center lg:text-start text-purple text-xl md:text-2xl mb-6 font-semibold"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.6 }}
-                  viewport={{ once: true }}
-                >
+                <motion.h3 className="text-xl md:text-2xl text-purple mb-8 font-medium" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.6 }} viewport={{ once: true }}>
                   Web Developer | Data Scientist | AI Enthusiast
-                </motion.p>
+                </motion.h3>
 
-                <motion.p
-                  className="text-center lg:text-start text-white-100 text-base md:text-lg leading-relaxed mb-8"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.7 }}
-                  viewport={{ once: true }}
-                >
-                  Hello, my name is Dzikri Setiawan. I am an active student at Universitas Pasundan, majoring in Informatics Engineering. Currently in my 6th semester at Universitas Pasundan, I'm not just studying technology. I'm actively
+                {/* Description */}
+                <motion.p className="text-white-100 text-base md:text-lg leading-relaxed mb-6" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.7 }} viewport={{ once: true }}>
+                  Hello, my name is Dzikri Setiawan. I am an active student at Universitas Pasundan, majoring in Informatics Engineering. Currently in my 6th semester at Universitas Pasundan. I'm not just studying technology, I'm actively
                   building it. With hands-on experience developing real-world applications for both commercial and educational sectors, I transform ideas into impactful digital solutions.
                 </motion.p>
 
-                <motion.p
-                  className="text-center lg:text-start text-white-100 text-base md:text-lg leading-relaxed mb-8"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.8 }}
-                  viewport={{ once: true }}
-                >
+                <motion.p className="text-white-100 text-base md:text-lg leading-relaxed mb-8" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.8 }} viewport={{ once: true }}>
                   My approach combines technical excellence with creative thinking, ensuring every project delivers exceptional user experiences. I believe in continuous learning and staying ahead of industry trends to provide cutting-edge
                   solutions for my clients.
                 </motion.p>
@@ -137,3 +135,12 @@ const Profile = () => {
 };
 
 export default Profile;
+
+
+
+
+
+
+
+
+

@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 
 export const FloatingNav = ({
@@ -17,6 +18,7 @@ export const FloatingNav = ({
 }) => {
   const { scrollYProgress } = useScroll();
   const [visible, setVisible] = useState(true);
+  const pathname = usePathname();
 
   useMotionValueEvent(scrollYProgress, 'change', (current) => {
     if (typeof current === 'number') {
@@ -33,6 +35,42 @@ export const FloatingNav = ({
       }
     }
   });
+
+  // Menentukan apakah di halaman projects atau detail project
+  const isHomePage = pathname === '/';
+  const isProjectsPage = pathname === '/projects';
+  const isProjectDetailPage = pathname?.startsWith('/projects/') && pathname !== '/projects';
+
+  // Dynamic navigation items berdasarkan halaman
+  const getDynamicNavItems = () => {
+    if (isHomePage) {
+      // Homepage: About, All Projects, Contact
+      return [
+        { name: 'About', link: '#about' },
+        { name: 'All Projects', link: '/projects' },
+        { name: 'Contact', link: '#contact' },
+      ];
+    } else if (isProjectsPage) {
+      // All Projects page: Home, About, Contact
+      return [
+        { name: 'Home', link: '/' },
+        { name: 'About', link: '/#about' },
+        { name: 'Contact', link: '/#contact' },
+      ];
+    } else if (isProjectDetailPage) {
+      // Project Detail page: Home, All Projects, Contact
+      return [
+        { name: 'Home', link: '/' },
+        { name: 'All Projects', link: '/projects' },
+        { name: 'Contact', link: '/#contact' },
+      ];
+    }
+
+    // Default fallback
+    return navItems;
+  };
+
+  const dynamicNavItems = getDynamicNavItems();
 
   return (
     <AnimatePresence mode="wait">
@@ -59,15 +97,16 @@ export const FloatingNav = ({
           border: '1px solid rgba(255, 255, 255, 0.125)',
         }}
       >
-        {/* Logo bulat di samping menu */}
+        {/* Logo */}
         <Link href="/" className="flex items-center">
           <motion.div className="w-12 h-12 rounded-full overflow-hidden bg-white/10 flex items-center justify-center mr-2" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
             <img src="/head.png" alt="Logo" className="w-20 h-20 object-contain" />
           </motion.div>
         </Link>
 
-        {navItems.map((navItem: any, idx: number) => (
-          <Link key={`link=${idx}`} href={navItem.link} className={cn('relative dark:text-neutral-50 items-center flex space-x-1 text-neutral-600 dark:hover:text-neutral-300 hover:text-neutral-500')}>
+        {/* Dynamic Navigation Items */}
+        {dynamicNavItems.map((navItem: any, idx: number) => (
+          <Link key={`link=${idx}`} href={navItem.link} className={cn('relative dark:text-neutral-50 items-center flex space-x-1 text-neutral-600 dark:hover:text-neutral-300 hover:text-neutral-500 transition-colors duration-300')}>
             <span className="block sm:hidden">{navItem.icon}</span>
             <span className="text-sm !cursor-pointer">{navItem.name}</span>
           </Link>
