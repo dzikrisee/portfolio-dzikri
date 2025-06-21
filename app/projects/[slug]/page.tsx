@@ -8,6 +8,7 @@ import { getProjectBySlug, projects, navItems } from '@/data';
 import { notFound } from 'next/navigation';
 import { Project } from '@/types/project';
 import { FloatingNav } from '@/components/ui/FloatingNavbar';
+import Footer from '@/components/Footer';
 
 interface ProjectDetailProps {
   params: {
@@ -82,19 +83,19 @@ const ProjectDetail = ({ params }: ProjectDetailProps) => {
   return (
     <>
       <main className="relative bg-black-100 flex justify-center items-center flex-col overflow-hidden mx-auto sm:px-10 px-5">
-        <div className="max-w-7xl w-full  mt-40">
-          {/* Navbar - akan otomatis berubah karena path /projects/[slug] */}
+        <div className="max-w-7xl w-full mt-20 md:mt-40">
+          {/* Navbar */}
           <FloatingNav navItems={navItems} />
 
-          {/* Hero Section */}
-          <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="mb-16">
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
+          {/* Hero Section - Mobile Optimized */}
+          <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="mb-12 md:mb-16">
+            <div className="flex flex-col lg:grid lg:grid-cols-2 gap-8 md:gap-12 items-start lg:items-center mt-20 md:mt-0">
               {/* Project Info */}
-              <div>
-                <div className="flex items-center gap-4 mb-6">
-                  <span className="px-4 py-2 bg-purple/20 text-purple rounded-full border border-purple/30 text-sm font-medium">{project.category}</span>
+              <div className="order-2 lg:order-1">
+                <div className="flex flex-wrap items-center gap-2 md:gap-4 mb-4 md:mb-6">
+                  <span className="px-3 md:px-4 py-1 md:py-2 bg-purple/20 text-purple rounded-full border border-purple/30 text-xs md:text-sm font-medium">{project.category}</span>
                   <span
-                    className={`px-4 py-2 rounded-full text-sm font-medium ${
+                    className={`px-3 md:px-4 py-1 md:py-2 rounded-full text-xs md:text-sm font-medium ${
                       project.status === 'Live'
                         ? 'bg-green-500/20 text-green-400 border border-green-400/30'
                         : project.status === 'In Development'
@@ -106,45 +107,47 @@ const ProjectDetail = ({ params }: ProjectDetailProps) => {
                   </span>
                 </div>
 
-                <h1 className="text-4xl lg:text-6xl font-bold text-white mb-6 leading-tight">{project.title}</h1>
+                <h1 className="text-2xl md:text-4xl lg:text-6xl font-bold text-white mb-4 md:mb-6 leading-tight">{project.title}</h1>
 
-                <p className="text-white-100 text-lg mb-8 leading-relaxed">{project.detailedDescription}</p>
+                <p className="text-white-100 text-sm md:text-lg mb-6 md:mb-8 leading-relaxed">{project.detailedDescription}</p>
 
-                {/* Project Meta */}
-                <div className="grid grid-cols-2 gap-6 mb-8">
-                  <div className="flex items-center gap-3">
-                    <FaCalendar className="text-purple" />
+                {/* Project Meta - Mobile Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-6 md:mb-8">
+                  <div className="flex items-center gap-2 md:gap-3">
+                    <FaCalendar className="text-purple text-sm md:text-base" />
                     <div>
-                      <p className="text-white-100 text-sm">Year</p>
-                      <p className="text-white font-medium">{project.startDate}</p>
+                      <p className="text-white-100 text-xs md:text-sm">Year</p>
+                      <p className="text-white font-medium text-sm md:text-base">{project.startDate}</p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <FaUsers className="text-purple" />
+                  <div className="flex items-center gap-2 md:gap-3">
+                    <FaUsers className="text-purple text-sm md:text-base" />
                     <div>
-                      <p className="text-white-100 text-sm">Team Size</p>
-                      <p className="text-white font-medium">{project.teamSize}</p>
+                      <p className="text-white-100 text-xs md:text-sm">Team Size</p>
+                      <p className="text-white font-medium text-sm md:text-base">{project.teamSize}</p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <FaCog className="text-purple" />
+                  <div className="flex items-center gap-2 md:gap-3 sm:col-span-2 lg:col-span-1">
+                    <FaCog className="text-purple text-sm md:text-base" />
                     <div>
-                      <p className="text-white-100 text-sm">Role</p>
-                      <p className="text-white font-medium">{project.role}</p>
+                      <p className="text-white-100 text-xs md:text-sm">Role</p>
+                      <p className="text-white font-medium text-sm md:text-base">{project.role}</p>
                     </div>
                   </div>
                 </div>
 
-                {/* Action Buttons */}
-                <div className="flex gap-4">
+                {/* Action Buttons - Mobile Stack */}
+                <div className="flex flex-col sm:flex-row gap-3 md:gap-4">
                   {project.liveUrl && (
                     <a
                       href={project.liveUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="px-8 py-4 bg-purple hover:bg-purple/80 text-white rounded-xl font-medium transition-all duration-300 transform hover:scale-105 flex items-center gap-3"
+                      className="px-6 md:px-8 py-3 md:py-4 bg-purple hover:bg-purple/80 text-white rounded-xl font-medium transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2 md:gap-3 text-sm md:text-base"
                     >
-                      <FaExternalLinkAlt /> Live Demo
+                      <FaExternalLinkAlt className="text-sm md:text-base" />
+                      <span className="hidden sm:inline">Live Demo</span>
+                      <span className="sm:hidden">Demo</span>
                     </a>
                   )}
 
@@ -153,45 +156,47 @@ const ProjectDetail = ({ params }: ProjectDetailProps) => {
                       href={project.githubUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="px-8 py-4 border border-white/20 hover:border-purple text-white-100 hover:text-purple rounded-xl font-medium transition-all duration-300 flex items-center gap-3"
+                      className="px-6 md:px-8 py-3 md:py-4 border border-white/20 hover:border-purple text-white-100 hover:text-purple rounded-xl font-medium transition-all duration-300 flex items-center justify-center gap-2 md:gap-3 text-sm md:text-base"
                     >
-                      <FaGithub /> Source Code
+                      <FaGithub className="text-sm md:text-base" />
+                      <span className="hidden sm:inline">Source Code</span>
+                      <span className="sm:hidden">Code</span>
                     </a>
                   )}
                 </div>
               </div>
 
-              {/* Main Project Image - Clickable */}
-              <div className="relative">
-                <div className="relative z-10 rounded-2xl overflow-hidden border border-white/10 cursor-pointer group" onClick={() => openLightbox(0)}>
-                  <img src={project.img} alt={project.title} className="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-105" />
+              {/* Main Project Image - Mobile First */}
+              <div className="relative order-1 lg:order-2 w-full">
+                <div className="relative z-10 rounded-xl md:rounded-2xl overflow-hidden border border-white/10 cursor-pointer group" onClick={() => openLightbox(0)}>
+                  <img src={project.img} alt={project.title} className="w-full h-48 sm:h-64 md:h-auto object-cover transition-transform duration-300 group-hover:scale-105" />
 
                   {/* Click to Enlarge Overlay */}
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-300 flex items-center justify-center">
-                    <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/20 backdrop-blur-sm rounded-full p-4">
-                      <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/20 backdrop-blur-sm rounded-full p-3 md:p-4">
+                      <svg className="w-6 h-6 md:w-8 md:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
                       </svg>
                     </div>
                   </div>
 
                   {/* Image Counter */}
-                  <div className="absolute top-4 right-4 bg-black/60 text-white px-3 py-1 rounded-full text-sm font-medium backdrop-blur-sm">Main Image</div>
+                  <div className="absolute top-3 md:top-4 right-3 md:right-4 bg-black/60 text-white px-2 md:px-3 py-1 rounded-full text-xs md:text-sm font-medium backdrop-blur-sm">Main Image</div>
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-br from-purple/20 to-transparent rounded-2xl blur-3xl"></div>
+                <div className="absolute inset-0 bg-gradient-to-br from-purple/20 to-transparent rounded-xl md:rounded-2xl blur-3xl"></div>
               </div>
             </div>
           </motion.div>
 
-          {/* Project Sections */}
-          <div className="grid lg:grid-cols-3 gap-12 mb-20">
+          {/* Project Sections - Mobile Stack */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-12 mb-12 md:mb-20">
             {/* Features */}
-            <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }} className="bg-black-200 rounded-2xl p-8 border border-white/10">
-              <h3 className="text-2xl font-bold text-white mb-6">Key Features</h3>
-              <ul className="space-y-3">
+            <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }} className="bg-black-200 rounded-xl md:rounded-2xl p-4 md:p-8 border border-white/10">
+              <h3 className="text-lg md:text-2xl font-bold text-white mb-4 md:mb-6">Key Features</h3>
+              <ul className="space-y-2 md:space-y-3">
                 {project.features.map((feature, index) => (
-                  <li key={index} className="flex items-start gap-3 text-white-100">
-                    <span className="w-2 h-2 bg-purple rounded-full mt-2 flex-shrink-0"></span>
+                  <li key={index} className="flex items-start gap-2 md:gap-3 text-white-100 text-sm md:text-base">
+                    <span className="w-1.5 h-1.5 md:w-2 md:h-2 bg-purple rounded-full mt-1.5 md:mt-2 flex-shrink-0"></span>
                     {feature}
                   </li>
                 ))}
@@ -199,25 +204,30 @@ const ProjectDetail = ({ params }: ProjectDetailProps) => {
             </motion.div>
 
             {/* Technologies */}
-            <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.3 }} className="bg-black-200 rounded-2xl p-8 border border-white/10">
-              <h3 className="text-2xl font-bold text-white mb-6">Technologies</h3>
-              <div className="space-y-4">
+            <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.3 }} className="bg-black-200 rounded-xl md:rounded-2xl p-4 md:p-8 border border-white/10">
+              <h3 className="text-lg md:text-2xl font-bold text-white mb-4 md:mb-6">Technologies</h3>
+              <div className="space-y-3 md:space-y-4">
                 {project.technologies.map((tech, index) => (
-                  <div key={index} className="border-l-2 border-purple/30 pl-4">
-                    <h4 className="text-white font-medium">{tech.name}</h4>
-                    <p className="text-white-100 text-sm">{tech.description}</p>
+                  <div key={index} className="border-l-2 border-purple/30 pl-3 md:pl-4">
+                    <h4 className="text-white font-medium text-sm md:text-base">{tech.name}</h4>
+                    <p className="text-white-100 text-xs md:text-sm">{tech.description}</p>
                   </div>
                 ))}
               </div>
             </motion.div>
 
             {/* Challenges */}
-            <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.4 }} className="bg-black-200 rounded-2xl p-8 border border-white/10">
-              <h3 className="text-2xl font-bold text-white mb-6">Challenges</h3>
-              <ul className="space-y-3">
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="bg-black-200 rounded-xl md:rounded-2xl p-4 md:p-8 border border-white/10 md:col-span-2 lg:col-span-1"
+            >
+              <h3 className="text-lg md:text-2xl font-bold text-white mb-4 md:mb-6">Challenges</h3>
+              <ul className="space-y-2 md:space-y-3">
                 {project.challenges.map((challenge, index) => (
-                  <li key={index} className="flex items-start gap-3 text-white-100">
-                    <span className="w-2 h-2 bg-red-400 rounded-full mt-2 flex-shrink-0"></span>
+                  <li key={index} className="flex items-start gap-2 md:gap-3 text-white-100 text-sm md:text-base">
+                    <span className="w-1.5 h-1.5 md:w-2 md:h-2 bg-red-400 rounded-full mt-1.5 md:mt-2 flex-shrink-0"></span>
                     {challenge}
                   </li>
                 ))}
@@ -225,11 +235,49 @@ const ProjectDetail = ({ params }: ProjectDetailProps) => {
             </motion.div>
           </div>
 
-          {/* Gallery Section */}
-          <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.4 }} className="mb-20">
-            <h3 className="text-3xl font-bold text-white mb-12 text-center">Project Gallery</h3>
+          {/* Gallery Section - Mobile: Horizontal Scroll, Desktop: Grid */}
+          <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.4 }} className="mb-12 md:mb-20">
+            <h3 className="text-2xl md:text-3xl font-bold text-white mb-6 md:mb-8 text-center">Project Gallery</h3>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* Mobile: Horizontal Scroll */}
+            <div className="block md:hidden">
+              <div className="relative">
+                <div className="flex gap-3 overflow-x-auto scrollbar-hide pb-4 snap-x snap-mandatory">
+                  {project.gallery.map((image, index) => (
+                    <div
+                      key={index}
+                      className="relative group cursor-pointer rounded-lg overflow-hidden border border-white/10 flex-shrink-0 snap-center"
+                      onClick={() => openLightbox(index + 1)}
+                      style={{ width: 'calc(50% - 6px)', minWidth: '150px' }}
+                    >
+                      <img src={image} alt={`${project.title} gallery ${index + 1}`} className="w-full h-32 sm:h-40 object-cover transition-transform duration-300 group-hover:scale-110" />
+
+                      {/* Hover Overlay */}
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300 flex items-center justify-center">
+                        <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/20 backdrop-blur-sm rounded-full p-2">
+                          <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                          </svg>
+                        </div>
+                      </div>
+
+                      {/* Image Counter */}
+                      <div className="absolute top-2 right-2 bg-black/60 text-white px-2 py-1 rounded-full text-xs font-medium backdrop-blur-sm">{index + 1}</div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Scroll Indicator */}
+                <div className="flex justify-center mt-4 gap-1">
+                  {project.gallery.map((_, index) => (
+                    <div key={index} className="w-2 h-2 rounded-full bg-white/20" />
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Desktop: Grid Layout */}
+            <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {project.gallery.map((image, index) => (
                 <div key={index} className="relative group cursor-pointer rounded-xl overflow-hidden border border-white/10" onClick={() => openLightbox(index + 1)}>
                   <img src={image} alt={`${project.title} gallery ${index + 1}`} className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-110" />
@@ -251,45 +299,86 @@ const ProjectDetail = ({ params }: ProjectDetailProps) => {
               ))}
             </div>
 
-            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 0.6 }} className="text-center text-white-100 mt-8">
-              Click any image to view in full size.
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 0.6 }} className="text-center text-white-100 mt-6 md:mt-8 text-sm md:text-base">
+              <span className="md:hidden">Swipe to see more images • Click any image to view in full size</span>
+              <span className="hidden md:inline">Click any image to view in full size.</span>
             </motion.p>
           </motion.div>
 
-          {/* Related Projects */}
+          {/* Related Projects - Mobile: 2 Column, Desktop: Full Width */}
           {relatedProjects.length > 0 && (
-            <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.5 }} className="mb-20">
-              <h3 className="text-3xl font-bold text-white mb-12 text-center">Related Projects</h3>
+            <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.5 }} className="mb-12 md:mb-20">
+              <h3 className="text-2xl md:text-3xl font-bold text-white mb-8 md:mb-12 text-center">Related Projects</h3>
 
-              <div className="grid md:grid-cols-2 gap-8">
+              {/* Mobile: 2 Column Grid */}
+              <div className="grid grid-cols-2 gap-3 md:hidden">
                 {relatedProjects.map((relatedProject, index) => (
-                  <Link key={relatedProject.id} href={`/projects/${relatedProject.slug}`} className="group block">
-                    <div className="bg-black-200 rounded-2xl border border-white/10 overflow-hidden hover:shadow-2xl hover:shadow-purple/20 transition-all duration-300 transform hover:-translate-y-2">
-                      <div className="relative h-48 overflow-hidden">
-                        <img src={relatedProject.img} alt={relatedProject.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                  <Link key={relatedProject.id} href={`/projects/${relatedProject.slug}`}>
+                    <motion.div
+                      initial={{ opacity: 0, y: 50 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.6, delay: 0.6 + index * 0.1 }}
+                      className="bg-gradient-to-br from-white/5 to-white/0 backdrop-blur-sm border border-white/10 rounded-2xl p-3 hover:border-purple/30 transition-all duration-300 group cursor-pointer"
+                    >
+                      <div className="relative overflow-hidden rounded-xl mb-3 bg-gradient-to-br from-purple/20 to-blue/20">
+                        <img src={relatedProject.img} alt={relatedProject.title} className="w-full h-28 sm:h-36 object-cover transition-transform duration-300 group-hover:scale-110" />
                       </div>
 
-                      <div className="p-6">
-                        <h4 className="text-xl font-bold text-white mb-3">{relatedProject.title}</h4>
-                        <p className="text-white-100 text-sm leading-relaxed">{relatedProject.des}</p>
+                      <div className="space-y-2">
+                        <div className="space-y-1">
+                          <h4 className="text-sm sm:text-base font-bold text-white line-clamp-2 group-hover:text-purple transition-colors duration-300">{relatedProject.title}</h4>
+                          <span className="inline-block px-2 py-1 bg-purple/20 text-purple text-xs rounded-full border border-purple/30">{relatedProject.category}</span>
+                        </div>
                       </div>
-                    </div>
+                    </motion.div>
+                  </Link>
+                ))}
+              </div>
+
+              {/* Desktop: Full Width Cards */}
+              <div className="hidden md:grid md:grid-cols-1 lg:grid-cols-2 gap-8">
+                {relatedProjects.map((relatedProject, index) => (
+                  <Link key={relatedProject.id} href={`/projects/${relatedProject.slug}`}>
+                    <motion.div
+                      initial={{ opacity: 0, y: 50 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.6, delay: 0.6 + index * 0.1 }}
+                      className="bg-gradient-to-br from-white/5 to-white/0 backdrop-blur-sm border border-white/10 rounded-3xl p-6 hover:border-purple/30 transition-all duration-300 group cursor-pointer"
+                    >
+                      <div className="relative overflow-hidden rounded-2xl mb-6 bg-gradient-to-br from-purple/20 to-blue/20">
+                        <img src={relatedProject.img} alt={relatedProject.title} className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-110" />
+                      </div>
+
+                      <div className="space-y-4">
+                        <div className="space-y-2">
+                          <h4 className="text-xl font-bold text-white group-hover:text-purple transition-colors duration-300">{relatedProject.title}</h4>
+                          <span className="inline-block px-3 py-1 bg-purple/20 text-purple text-xs rounded-full border border-purple/30">{relatedProject.category}</span>
+                        </div>
+
+                        <p className="text-white-100 text-base leading-relaxed line-clamp-3">{relatedProject.des}</p>
+                      </div>
+                    </motion.div>
                   </Link>
                 ))}
               </div>
             </motion.div>
           )}
+
+          {/* Footer */}
+          <Footer />
         </div>
       </main>
 
-      {/* Lightbox */}
+      {/* Lightbox - Mobile Optimized */}
       <AnimatePresence>
         {lightboxOpen && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[9999] bg-black/90 backdrop-blur-md flex items-center justify-center p-4" onClick={closeLightbox}>
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }} className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4" onClick={closeLightbox}>
             {/* Close Button */}
-            <button onClick={closeLightbox} className="absolute top-6 right-6 z-10 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white transition-colors duration-300">
-              <FaTimes className="text-xl" />
+            <button
+              onClick={closeLightbox}
+              className="absolute top-4 md:top-6 right-4 md:right-6 z-10 w-10 h-10 md:w-12 md:h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white transition-colors duration-300"
+            >
+              <FaTimes className="text-lg md:text-xl" />
             </button>
 
             {/* Navigation Buttons */}
@@ -300,25 +389,24 @@ const ProjectDetail = ({ params }: ProjectDetailProps) => {
                     e.stopPropagation();
                     goToPrevious();
                   }}
-                  className="absolute left-6 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white transition-colors duration-300"
+                  className="absolute left-4 md:left-6 top-1/2 -translate-y-1/2 z-10 w-10 h-10 md:w-12 md:h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white transition-colors duration-300"
                 >
-                  <FaChevronLeft className="text-xl" />
+                  <FaChevronLeft className="text-lg md:text-xl" />
                 </button>
-
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
                     goToNext();
                   }}
-                  className="absolute right-6 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white transition-colors duration-300"
+                  className="absolute right-4 md:right-6 top-1/2 -translate-y-1/2 z-10 w-10 h-10 md:w-12 md:h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white transition-colors duration-300"
                 >
-                  <FaChevronRight className="text-xl" />
+                  <FaChevronRight className="text-lg md:text-xl" />
                 </button>
               </>
             )}
 
             {/* Image Counter */}
-            <div className="absolute top-6 left-1/2 -translate-x-1/2 bg-black/60 text-white px-4 py-2 rounded-full text-sm font-medium backdrop-blur-sm">
+            <div className="absolute top-4 md:top-6 left-1/2 -translate-x-1/2 bg-black/60 text-white px-3 md:px-4 py-1 md:py-2 rounded-full text-sm font-medium backdrop-blur-sm">
               {currentImageIndex + 1} / {allImages.length}
             </div>
 
@@ -336,7 +424,7 @@ const ProjectDetail = ({ params }: ProjectDetailProps) => {
             </motion.div>
 
             {/* Image Description */}
-            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-black/60 text-white px-6 py-3 rounded-full text-sm font-medium backdrop-blur-sm max-w-md text-center">
+            <div className="absolute bottom-4 md:bottom-6 left-1/2 -translate-x-1/2 bg-black/60 text-white px-4 md:px-6 py-2 md:py-3 rounded-full text-sm font-medium backdrop-blur-sm max-w-md text-center">
               {currentImageIndex === 0 ? 'Main Project Image' : `Gallery Image ${currentImageIndex}`}
             </div>
           </motion.div>
