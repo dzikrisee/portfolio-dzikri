@@ -305,7 +305,7 @@ const ProjectDetail = ({ params }: ProjectDetailProps) => {
             </motion.p>
           </motion.div>
 
-          {/* Related Projects - Mobile: 2 Column, Desktop: Full Width */}
+          {/* Related Projects - FIXED VERSION */}
           {relatedProjects.length > 0 && (
             <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.5 }} className="mb-12 md:mb-20">
               <h3 className="text-2xl md:text-3xl font-bold text-white mb-8 md:mb-12 text-center">Related Projects</h3>
@@ -313,12 +313,10 @@ const ProjectDetail = ({ params }: ProjectDetailProps) => {
               {/* Mobile: 2 Column Grid */}
               <div className="grid grid-cols-2 gap-3 md:hidden">
                 {relatedProjects.map((relatedProject, index) => (
-                  <Link key={relatedProject.id} href={`/projects/${relatedProject.slug}`}>
-                    <motion.div
-                      initial={{ opacity: 0, y: 50 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.6, delay: 0.6 + index * 0.1 }}
-                      className="bg-gradient-to-br from-white/5 to-white/0 backdrop-blur-sm border border-white/10 rounded-2xl p-3 hover:border-purple/30 transition-all duration-300 group cursor-pointer"
+                  <motion.div key={relatedProject.id} initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.6 + index * 0.1 }} className="relative" style={{ zIndex: 10 }}>
+                    <Link
+                      href={`/projects/${relatedProject.slug}`}
+                      className="block bg-gradient-to-br from-white/5 to-white/0 backdrop-blur-sm border border-white/10 rounded-2xl p-3 hover:border-purple/30 transition-all duration-300 group cursor-pointer"
                     >
                       <div className="relative overflow-hidden rounded-xl mb-3 bg-gradient-to-br from-purple/20 to-blue/20">
                         <img src={relatedProject.img} alt={relatedProject.title} className="w-full h-28 sm:h-36 object-cover transition-transform duration-300 group-hover:scale-110" />
@@ -330,20 +328,18 @@ const ProjectDetail = ({ params }: ProjectDetailProps) => {
                           <span className="inline-block px-2 py-1 bg-purple/20 text-purple text-xs rounded-full border border-purple/30">{relatedProject.category}</span>
                         </div>
                       </div>
-                    </motion.div>
-                  </Link>
+                    </Link>
+                  </motion.div>
                 ))}
               </div>
 
               {/* Desktop: Full Width Cards */}
               <div className="hidden md:grid md:grid-cols-1 lg:grid-cols-2 gap-8">
                 {relatedProjects.map((relatedProject, index) => (
-                  <Link key={relatedProject.id} href={`/projects/${relatedProject.slug}`}>
-                    <motion.div
-                      initial={{ opacity: 0, y: 50 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.6, delay: 0.6 + index * 0.1 }}
-                      className="bg-gradient-to-br from-white/5 to-white/0 backdrop-blur-sm border border-white/10 rounded-3xl p-6 hover:border-purple/30 transition-all duration-300 group cursor-pointer"
+                  <motion.div key={relatedProject.id} initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.6 + index * 0.1 }} className="relative" style={{ zIndex: 10 }}>
+                    <Link
+                      href={`/projects/${relatedProject.slug}`}
+                      className="block bg-gradient-to-br from-white/5 to-white/0 backdrop-blur-sm border border-white/10 rounded-3xl p-6 hover:border-purple/30 transition-all duration-300 group cursor-pointer"
                     >
                       <div className="relative overflow-hidden rounded-2xl mb-6 bg-gradient-to-br from-purple/20 to-blue/20">
                         <img src={relatedProject.img} alt={relatedProject.title} className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-110" />
@@ -357,8 +353,8 @@ const ProjectDetail = ({ params }: ProjectDetailProps) => {
 
                         <p className="text-white-100 text-base leading-relaxed line-clamp-3">{relatedProject.des}</p>
                       </div>
-                    </motion.div>
-                  </Link>
+                    </Link>
+                  </motion.div>
                 ))}
               </div>
             </motion.div>

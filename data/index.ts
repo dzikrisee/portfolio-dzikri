@@ -50,7 +50,7 @@ export const projects: Project[] = [
     des: 'Full-stack e-commerce platform for Widemoore, a local Indonesian fashion brand, featuring comprehensive online shopping experience for clothing retail.',
     img: '/projects/widemoore.png',
     iconLists: ['/laravel.svg', '/tail.svg', '/livewire.svg', '/filament.svg', '/alpinejs.svg'],
-    link: 'https://',
+    link: '',
 
     // Extended Project properties
     slug: 'widemoore-ecommerce',
@@ -71,7 +71,7 @@ export const projects: Project[] = [
     ],
     detailedDescription: 'A comprehensive e-commerce platform built for Widemoore, featuring modern design, secure payment processing, and efficient inventory management.',
     githubUrl: '',
-    liveUrl: 'https://',
+    liveUrl: null,
   },
   {
     id: 2,
@@ -164,7 +164,7 @@ export const projects: Project[] = [
     detailedDescription:
       'FitZone E-Commerce Platform is a comprehensive online shopping solution developed for fitness and sports equipment retail in Bandung, Indonesia. The platform serves fitness enthusiasts by providing a complete online shopping experience with modern web technologies. Built using Laravel as the core framework, TailwindCSS for responsive design, MySQL for robust data management, and Livewire for dynamic user interactions. The project features a comprehensive product catalog management system with organized categories for gym equipment, supplements, and fitness accessories, secure payment gateway integration for safe transactions, and an intuitive shopping cart functionality that ensures seamless online shopping experience.',
     githubUrl: '',
-    liveUrl: 'https://fitzone-ecommerce.com',
+    liveUrl: null,
   },
 ];
 

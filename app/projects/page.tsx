@@ -47,8 +47,8 @@ const AllProjects = () => {
             <button
               key={category}
               onClick={() => setFilter(category)}
-              className={`px-3 md:px-6 py-2 md:py-3 rounded-full border transition-all duration-300 text-xs md:text-sm ${
-                filter === category ? 'bg-purple border-purple text-white shadow-lg shadow-purple/25' : 'border-white/20 text-white-100 hover:border-purple hover:text-purple'
+              className={`px-3 md:px-6 py-2 md:py-3 rounded-full border transition-all duration-300 text-xs md:text-sm relative z-10 cursor-pointer ${
+                filter === category ? 'bg-purple text-white border-purple' : 'bg-transparent text-white-100 border-white/20 hover:border-purple hover:text-purple'
               }`}
             >
               {category}
@@ -56,24 +56,24 @@ const AllProjects = () => {
           ))}
         </motion.div>
 
-        {/* Projects Grid - Mobile: 2 columns, Desktop: 3 columns */}
-        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-8 mb-20">
+        {/* Projects Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 mb-16">
           {filteredProjects.map((project, index) => (
             <motion.div
               key={project.id}
-              initial={{ opacity: 0, y: 50 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="bg-gradient-to-br from-white/5 to-white/0 backdrop-blur-sm border border-white/10 rounded-2xl md:rounded-3xl p-3 md:p-6 hover:border-purple/30 transition-all duration-300 group"
+              className="group relative bg-black-200 rounded-xl border border-white/[0.1] overflow-hidden hover:border-purple/50 transition-all duration-300 hover:scale-[1.02] cursor-pointer"
             >
               {/* Project Image */}
-              <div className="relative overflow-hidden rounded-xl md:rounded-2xl mb-3 md:mb-6 bg-gradient-to-br from-purple/20 to-blue/20">
-                <img src={project.img} alt={project.title} className="w-full h-28 sm:h-36 md:h-48 object-cover transition-transform duration-300 group-hover:scale-110" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="relative h-40 md:h-48 overflow-hidden">
+                <img src={project.img} alt={project.title} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" />
+                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-all duration-300" />
               </div>
 
-              {/* Project Info */}
-              <div className="space-y-2 md:space-y-4">
+              {/* Project Content */}
+              <div className="p-4 md:p-6 space-y-3 md:space-y-4">
                 {/* Title & Category */}
                 <div className="space-y-1 md:space-y-2">
                   <h3 className="text-sm sm:text-base md:text-xl font-bold text-white line-clamp-2 group-hover:text-purple transition-colors duration-300">{project.title}</h3>
@@ -94,10 +94,11 @@ const AllProjects = () => {
                 </div>
 
                 {/* Action Buttons */}
-                <div className="flex gap-2 md:gap-4 pt-2 md:pt-4">
+                <div className="flex gap-2 md:gap-4 pt-2 md:pt-4 relative z-20">
                   <Link
                     href={`/projects/${project.slug}`}
-                    className="flex-1 px-3 md:px-6 py-2 md:py-3 bg-purple/20 hover:bg-purple/30 text-purple border border-purple/30 rounded-lg md:rounded-xl font-medium transition-all duration-300 text-xs md:text-sm text-center"
+                    className="flex-1 px-3 md:px-6 py-2 md:py-3 bg-purple/20 hover:bg-purple/30 text-purple border border-purple/30 rounded-lg md:rounded-xl font-medium transition-all duration-300 text-xs md:text-sm text-center relative z-30 cursor-pointer"
+                    onClick={(e) => e.stopPropagation()}
                   >
                     <span className="hidden sm:inline">View Details</span>
                     <span className="sm:hidden">Details</span>
@@ -107,7 +108,8 @@ const AllProjects = () => {
                       href={project.liveUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-center px-3 md:px-4 py-2 md:py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg md:rounded-xl transition-all duration-300"
+                      className="flex items-center justify-center px-3 md:px-4 py-2 md:py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg md:rounded-xl transition-all duration-300 relative z-30 cursor-pointer"
+                      onClick={(e) => e.stopPropagation()}
                     >
                       <FaExternalLinkAlt className="w-3 h-3 md:w-4 md:h-4" />
                     </a>
