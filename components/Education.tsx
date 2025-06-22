@@ -1,9 +1,70 @@
-import React from 'react';
+'use client';
+import React, { useState, useRef } from 'react';
 import Image from 'next/image';
 import { Button } from './ui/MovingBorders';
 import { motion } from 'framer-motion';
+import dynamic from 'next/dynamic';
+
+// Navigation Buttons Component - dynamic import to avoid hydration issues
+const NavigationButtons = dynamic(
+  () =>
+    Promise.resolve(({ scrollLeft, scrollRight }: { scrollLeft: () => void; scrollRight: () => void }) => (
+      <div className="flex justify-center gap-3 mb-6 lg:hidden">
+        <button onClick={scrollLeft} className="bg-purple/80 hover:bg-purple text-white p-2 rounded-full shadow-lg transition-all duration-300" aria-label="Scroll left">
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+        <button onClick={scrollRight} className="bg-purple/80 hover:bg-purple text-white p-2 rounded-full shadow-lg transition-all duration-300" aria-label="Scroll right">
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+      </div>
+    )),
+  { ssr: false },
+);
+
+// Show More Button Component - dynamic import to avoid hydration issues
+const ShowMoreButton = dynamic(
+  () =>
+    Promise.resolve(({ onClick, expanded }: { onClick: () => void; expanded: boolean }) => (
+      <button onClick={onClick} className="lg:hidden text-purple text-sm font-medium hover:text-purple/80 transition-colors">
+        {expanded ? 'Show Less' : 'Show More'}
+      </button>
+    )),
+  { ssr: false },
+);
 
 const Education = () => {
+  const [expandedDescriptions, setExpandedDescriptions] = useState<{ [key: number]: boolean }>({});
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  const toggleDescription = (id: number) => {
+    setExpandedDescriptions((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
+
+  const scrollLeft = () => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollBy({
+        left: -scrollContainerRef.current.clientWidth * 0.8,
+        behavior: 'smooth',
+      });
+    }
+  };
+
+  const scrollRight = () => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollBy({
+        left: scrollContainerRef.current.clientWidth * 0.8,
+        behavior: 'smooth',
+      });
+    }
+  };
+
   const educationData = [
     {
       id: 1,
@@ -31,6 +92,15 @@ const Education = () => {
     },
   ];
 
+  const truncateText = (text: string, lines: number = 2) => {
+    const words = text.split(' ');
+    const wordsPerLine = 12; // Estimasi kata per baris
+    const maxWords = lines * wordsPerLine;
+
+    if (words.length <= maxWords) return text;
+    return words.slice(0, maxWords).join(' ') + '...';
+  };
+
   return (
     <section className="py-20 w-full bg-gradient-to-b from-transparent to-black-100/50">
       <div className="w-full max-w-7xl mx-auto px-5">
@@ -44,8 +114,18 @@ const Education = () => {
           </motion.p>
         </motion.div>
 
-        {/* Education Cards Grid */}
-        <div className="grid lg:grid-cols-2 grid-cols-1 gap-8">
+        {/* Mobile Navigation Buttons */}
+        <NavigationButtons scrollLeft={scrollLeft} scrollRight={scrollRight} />
+
+        {/* Education Cards Container */}
+        <div
+          ref={scrollContainerRef}
+          className="flex overflow-x-auto gap-4 pb-4 lg:grid lg:grid-cols-2 lg:gap-8 lg:overflow-visible lg:pb-0"
+          style={{
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none',
+          }}
+        >
           {educationData.map((edu, index) => (
             <motion.div
               key={edu.id}
@@ -54,7 +134,7 @@ const Education = () => {
               transition={{ duration: 0.8, delay: index * 0.2 }}
               viewport={{ once: true }}
               whileHover={{ y: -10 }}
-              className="h-full"
+              className="h-full w-80 lg:w-full flex-shrink-0"
             >
               <Button
                 duration={Math.floor(Math.random() * 10000) + 10000}
@@ -66,48 +146,61 @@ const Education = () => {
                 }}
                 className="flex-1 text-black dark:text-white border-neutral-200 dark:border-slate-800 w-full h-full"
               >
-                <div className="p-8 py-10 h-full flex flex-col">
+                <div className="p-6 lg:p-8 py-8 lg:py-10 h-full flex flex-col">
                   {/* University Logo and Header */}
-                  <motion.div className="flex items-center gap-6 mb-8" initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.6, delay: 0.3 + index * 0.2 }} viewport={{ once: true }}>
-                    <div className="relative w-20 h-20 md:w-24 md:h-24 rounded-xl overflow-hidden border-2 border-white/20 backdrop-blur-sm bg-white flex items-center justify-center flex-shrink-0 p-2">
+                  <motion.div className="flex items-center gap-4 lg:gap-6 mb-6 lg:mb-8" initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.6, delay: 0.3 + index * 0.2 }} viewport={{ once: true }}>
+                    <div className="relative w-20 h-20 lg:w-24 lg:h-24 rounded-xl overflow-hidden border-2 border-white/20 backdrop-blur-sm bg-white flex items-center justify-center flex-shrink-0 p-2">
                       <Image src={edu.logo} alt={`${edu.universityName} Logo`} fill className="object-contain p-1" />
                     </div>
 
                     <div className="flex-1">
-                      <h3 className="text-xl md:text-2xl font-bold text-white mb-2 leading-tight text-left">{edu.universityName}</h3>
-                      <div className="flex flex-wrap items-center gap-3">
+                      <h3 className="text-xl lg:text-2xl font-bold text-white mb-2 leading-tight text-left">{edu.universityName}</h3>
+                      <div className="flex flex-wrap items-center gap-2 lg:gap-3">
                         <span className="text-white-100 text-sm bg-white/10 px-3 py-1 rounded-full border border-white/20">📅 {edu.period}</span>
-                        <span className="text-purple text-sm bg-purple/20 px-3 py-1 rounded-full border border-purple/30 font-semibold">GPA: {edu.gpa}</span>
+                        <span className="text-purple text-sm bg-purple/20 px-3 py-1 rounded-full border border-purple/30 font-medium">GPA: {edu.gpa}</span>
                       </div>
                     </div>
                   </motion.div>
 
-                  {/* Degree Information */}
-                  <motion.div className="mb-6" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.4 + index * 0.2 }} viewport={{ once: true }}>
-                    <h4 className="text-purple text-lg md:text-xl font-bold mb-2">{edu.degree}</h4>
-                    <p className="text-white-100 text-base font-medium mb-3">Specialization: {edu.specialization}</p>
-                    <p className="text-white-100 text-sm md:text-base leading-relaxed">{edu.description}</p>
-                  </motion.div>
+                  {/* Education Details */}
+                  <motion.div className="flex-1 space-y-4 lg:space-y-6" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.5 + index * 0.2 }} viewport={{ once: true }}>
+                    {/* Degree & Specialization */}
+                    <div>
+                      <h4 className="text-lg lg:text-xl font-semibold text-white mb-2 leading-tight">{edu.degree}</h4>
+                      <p className="text-purple font-medium text-base mb-4">{edu.specialization}</p>
+                    </div>
 
-                  {/* Achievements */}
-                  <motion.div className="flex-1" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.5 + index * 0.2 }} viewport={{ once: true }}>
-                    {/* <h5 className="text-white font-semibold mb-4 text-base md:text-lg">🏆 Key Achievements</h5> */}
-                    {/* <div className="space-y-3">
-                      {edu.achievements.map((achievement, achIndex) => (
-                        <motion.div
-                          key={achIndex}
-                          className="flex items-center gap-3 p-3 rounded-lg bg-white/5 border border-white/10"
-                          initial={{ opacity: 0, x: -20 }}
-                          whileInView={{ opacity: 1, x: 0 }}
-                          transition={{ duration: 0.4, delay: 0.6 + index * 0.2 + achIndex * 0.1 }}
-                          viewport={{ once: true }}
-                          whileHover={{ scale: 1.02, backgroundColor: 'rgba(255,255,255,0.1)' }}
-                        >
-                          <div className="w-2 h-2 bg-purple rounded-full flex-shrink-0"></div>
-                          <p className="text-white-100 text-sm md:text-base">{achievement}</p>
-                        </motion.div>
-                      ))}
-                    </div> */}
+                    {/* Description */}
+                    <div>
+                      <p className="text-white-100 text-base leading-relaxed mb-3">
+                        <span className="lg:hidden">{expandedDescriptions[edu.id] ? edu.description : truncateText(edu.description)}</span>
+                        <span className="hidden lg:inline">{edu.description}</span>
+                      </p>
+
+                      {/* Show More/Less button */}
+                      <ShowMoreButton onClick={() => toggleDescription(edu.id)} expanded={expandedDescriptions[edu.id] || false} />
+                    </div>
+
+                    {/* Achievements - hanya di desktop */}
+                    <div className="hidden lg:block">
+                      <h5 className="text-white font-semibold mb-3 text-lg">Key Achievements:</h5>
+                      <div className="space-y-2">
+                        {edu.achievements.map((achievement, idx) => (
+                          <motion.div
+                            key={idx}
+                            className="flex items-start gap-3 p-3 rounded-lg border border-white/10 backdrop-blur-sm hover:bg-white/5 transition-all duration-300"
+                            initial={{ opacity: 0, x: -20 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.4, delay: 0.7 + index * 0.2 + idx * 0.1 }}
+                            viewport={{ once: true }}
+                            whileHover={{ scale: 1.02, backgroundColor: 'rgba(255,255,255,0.1)' }}
+                          >
+                            <div className="w-2 h-2 bg-purple rounded-full flex-shrink-0 mt-2"></div>
+                            <p className="text-white-100 text-base">{achievement}</p>
+                          </motion.div>
+                        ))}
+                      </div>
+                    </div>
                   </motion.div>
                 </div>
               </Button>
@@ -116,12 +209,18 @@ const Education = () => {
         </div>
 
         {/* Education Summary */}
-        <motion.div className="mt-16 text-center" initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.3 }} viewport={{ once: true }}>
-          <div className="bg-gradient-to-r from-purple/10 via-blue/10 to-cyan/10 border border-white/20 rounded-2xl p-8 backdrop-blur-sm">
-            <motion.h3 className="text-2xl md:text-3xl font-bold text-white mb-4" initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6, delay: 0.5 }} viewport={{ once: true }}>
+        <motion.div className="mt-8 lg:mt-16 text-center" initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.3 }} viewport={{ once: true }}>
+          <div className="bg-gradient-to-r from-purple/10 via-blue/10 to-cyan/10 border border-white/20 rounded-2xl p-6 lg:p-8 backdrop-blur-sm">
+            <motion.h3
+              className="text-xl lg:text-2xl xl:text-3xl font-bold text-white mb-3 lg:mb-4"
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+              viewport={{ once: true }}
+            >
               Academic Excellence & Innovation
             </motion.h3>
-            <motion.p className="text-white-100 text-lg max-w-4xl mx-auto leading-relaxed" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.7 }} viewport={{ once: true }}>
+            <motion.p className="text-white-100 text-sm lg:text-lg max-w-4xl mx-auto leading-relaxed" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.7 }} viewport={{ once: true }}>
               My educational journey has provided me with a solid foundation in computer science principles, advanced programming techniques, and modern software development methodologies. Through rigorous academic training and hands-on
               projects, I've developed the analytical thinking and technical skills essential for solving complex real-world problems.
             </motion.p>

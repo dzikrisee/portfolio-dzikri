@@ -1,11 +1,42 @@
-import React from 'react';
+'use client';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import { Button } from './ui/MovingBorders';
 import MagicButton from './MagicButton';
 import { motion } from 'framer-motion';
 import { FaDownload } from 'react-icons/fa';
+import dynamic from 'next/dynamic';
+
+// Dynamic import untuk Show More button untuk menghindari hydration issues
+const ShowMoreButton = dynamic(
+  () =>
+    Promise.resolve(({ onClick, expanded }: { onClick: () => void; expanded: boolean }) => (
+      <button onClick={onClick} className="lg:hidden text-purple text-sm font-medium hover:text-purple/80 transition-colors inline-flex items-center gap-1 mt-2">
+        {expanded ? 'Show Less' : 'Show More'}
+      </button>
+    )),
+  { ssr: false },
+);
 
 const Profile = () => {
+  const [showFullDescription, setShowFullDescription] = useState(false);
+
+  // Deskripsi paragraf pertama
+  const firstParagraph =
+    "Hello, my name is Dzikri Setiawan. I am an active student at Universitas Pasundan, majoring in Informatics Engineering. Currently in my 6th semester at Universitas Pasundan. I'm not just studying technology, I'm actively building it. With hands-on experience developing real-world applications for both commercial and educational sectors, I transform ideas into impactful digital solutions.";
+
+  // Deskripsi paragraf kedua
+  const secondParagraph =
+    'My approach combines technical excellence with creative thinking, ensuring every project delivers exceptional user experiences. I believe in continuous learning and staying ahead of industry trends to provide cutting-edge solutions for my clients.';
+
+  // Extract first 2 sentences dari paragraf pertama untuk mobile
+  const sentences = firstParagraph.split('. ');
+  const shortDescription = sentences.slice(0, 2).join('. ') + (sentences.length > 2 ? '.' : '');
+
+  const toggleDescription = () => {
+    setShowFullDescription(!showFullDescription);
+  };
+
   return (
     <section className="py-20 w-full">
       <div className="w-full max-w-7xl mx-auto px-5">
@@ -73,19 +104,37 @@ const Profile = () => {
                   Web Developer | Data Scientist | AI Enthusiast
                 </motion.h3>
 
-                {/* Description */}
-                <motion.p className="text-white-100 text-base md:text-lg leading-relaxed mb-6" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.7 }} viewport={{ once: true }}>
-                  Hello, my name is Dzikri Setiawan. I am an active student at Universitas Pasundan, majoring in Informatics Engineering. Currently in my 6th semester at Universitas Pasundan. I'm not just studying technology, I'm actively
-                  building it. With hands-on experience developing real-world applications for both commercial and educational sectors, I transform ideas into impactful digital solutions.
-                </motion.p>
+                {/* Description - Mobile: Limited, Desktop: Full */}
+                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.7 }} viewport={{ once: true }}>
+                  {/* Mobile: Show limited description with toggle */}
+                  <div className="lg:hidden">
+                    <p className="text-white-100 text-base md:text-lg leading-relaxed mb-2">{showFullDescription ? firstParagraph : shortDescription}</p>
 
-                <motion.p className="text-white-100 text-base md:text-lg leading-relaxed mb-8" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.8 }} viewport={{ once: true }}>
-                  My approach combines technical excellence with creative thinking, ensuring every project delivers exceptional user experiences. I believe in continuous learning and staying ahead of industry trends to provide cutting-edge
-                  solutions for my clients.
-                </motion.p>
+                    {showFullDescription && <p className="text-white-100 text-base md:text-lg leading-relaxed mb-2">{secondParagraph}</p>}
+
+                    <ShowMoreButton onClick={toggleDescription} expanded={showFullDescription} />
+                  </div>
+
+                  {/* Desktop: Show full description (original) */}
+                  <div className="hidden lg:block">
+                    <motion.p className="text-white-100 text-base md:text-lg leading-relaxed mb-6" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.7 }} viewport={{ once: true }}>
+                      {firstParagraph}
+                    </motion.p>
+
+                    <motion.p className="text-white-100 text-base md:text-lg leading-relaxed mb-8" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.8 }} viewport={{ once: true }}>
+                      {secondParagraph}
+                    </motion.p>
+                  </div>
+                </motion.div>
 
                 {/* Skills Tags with Stagger Animation */}
-                <motion.div className="flex flex-wrap justify-center lg:justify-start gap-3" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.9 }} viewport={{ once: true }}>
+                <motion.div
+                  className="flex flex-wrap justify-center lg:justify-start gap-3 mt-8 lg:mt-0"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.9 }}
+                  viewport={{ once: true }}
+                >
                   {['React', 'Next.js', 'TypeScript', 'Node.js', 'Python', 'MongoDB'].map((skill, index) => (
                     <motion.span
                       key={skill}
@@ -135,12 +184,3 @@ const Profile = () => {
 };
 
 export default Profile;
-
-
-
-
-
-
-
-
-

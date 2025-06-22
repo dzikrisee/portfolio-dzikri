@@ -12,10 +12,59 @@ const RecentProjects = () => {
         A small selection of <span className="text-purple">recent projects</span>
       </h1>
 
-      <div className="flex flex-wrap items-center justify-center p-4 gap-16 mt-10">
+      {/* Mobile: Grid 2 kolom, Desktop: Flex wrap */}
+      <div className="grid grid-cols-2 gap-4 mt-10 md:hidden p-4">
+        {projects.map((item) => (
+          <div key={item.id} className="w-full">
+            <PinContainer title={item.pinTitle} href={`/projects/${item.slug}`}>
+              {/* Card dengan ukuran diperkecil untuk mobile */}
+              <div className="relative flex items-center justify-center w-full overflow-hidden h-[15vh] mb-6">
+                <div className="relative w-full h-full overflow-hidden rounded-2xl" style={{ backgroundColor: '#13162D' }}>
+                  <img src="/bg.png" alt="bgimg" className="w-full h-full object-cover" />
+                </div>
+                <img src={item.img} alt="cover" className="z-10 absolute inset-0 w-full h-full object-cover object-center rounded-2xl" />
+              </div>
+
+              <h1 className="font-bold text-sm line-clamp-1 mb-2">{item.title}</h1>
+
+              <p
+                className="font-light text-xs line-clamp-2 mb-4"
+                style={{
+                  color: '#BEC1DD',
+                }}
+              >
+                {item.des}
+              </p>
+
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  {item.iconLists.slice(0, 3).map((icon, index) => (
+                    <div
+                      key={index}
+                      className="border border-white/[.2] rounded-full bg-black w-6 h-6 flex justify-center items-center"
+                      style={{
+                        transform: `translateX(-${3 * index + 1}px)`,
+                      }}
+                    >
+                      <img src={icon} alt="icon" className="p-1" />
+                    </div>
+                  ))}
+                </div>
+
+                <div className="flex justify-center items-center">
+                  <p className="text-xs text-purple">View</p>
+                  <FaLocationArrow className="ms-1 text-xs" color="#CBACF9" />
+                </div>
+              </div>
+            </PinContainer>
+          </div>
+        ))}
+      </div>
+
+      {/* Desktop: Layout original */}
+      <div className="hidden md:flex flex-wrap items-center justify-center p-4 gap-16 mt-10">
         {projects.map((item) => (
           <div className="lg:min-h-[40rem] h-[32rem] flex items-center justify-center sm:w-[28rem] w-[85vw]" key={item.id}>
-            {/* Remove Link wrapper and let PinContainer handle navigation */}
             <PinContainer title={item.pinTitle} href={`/projects/${item.slug}`}>
               <div className="relative flex items-center justify-center sm:w-[28rem] w-[85vw] overflow-hidden h-[25vh] lg:h-[35vh] mb-10">
                 <div className="relative w-full h-full overflow-hidden lg:rounded-3xl" style={{ backgroundColor: '#13162D' }}>

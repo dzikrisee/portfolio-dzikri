@@ -115,7 +115,7 @@ export const projects: Project[] = [
     startDate: '2024',
     role: 'Mobile Developer',
     teamSize: '3 Developers',
-    gallery: ['/projects/kostkita-1.jpg', '/projects/kostkita-2.jpg', '/projects/kostkita-3.jpg'],
+    gallery: ['/projects/kostkita.png', '/projects/kostkita.png', '/projects/kostkita.png'],
     features: ['Property listing management', 'Tenant management', 'Payment tracking', 'Real-time notifications', 'Property analytics'],
     challenges: ['Implementing real-time sync', 'Optimizing mobile performance', 'Creating intuitive UX design'],
     technologies: [
@@ -127,32 +127,44 @@ export const projects: Project[] = [
     githubUrl: '',
     liveUrl: null,
   },
+  // Update untuk data Fitzone E-Commerce Platform di data/index.ts
+
   {
     id: 4,
     title: 'Fitzone E-Commerce Platform',
-    des: 'Personal portfolio website showcasing projects, experience, and skills with modern design and interactive animations built with Next.js.',
+    des: 'Full-stack e-commerce platform for fitness equipment retail, providing comprehensive online shopping platform for fitness enthusiasts with modern web technologies and user-centered design.',
     img: '/projects/fitzone.png',
-    iconLists: ['/laravel.svg', '/livewire.svg', '/filament.svg', '/tail.svg', '/mysql.svg', '/next.svg'],
-    link: 'https://portfolio-dzikri.com',
+    iconLists: ['/laravel.svg', '/livewire.svg', '/tail.svg', '/mysql.svg', '/filament.svg'],
+    link: 'https://fitzone-ecommerce.com',
 
-    slug: 'personal-portfolio',
+    slug: 'fitzone-ecommerce',
     pinTitle: 'Fitzone E-Commerce',
     category: 'E-Commerce',
     status: 'Live',
     startDate: '2024',
-    role: 'Frontend Developer',
-    teamSize: '5 Developer',
+    role: 'Full-Stack Web Developer',
+    teamSize: '1 Developer',
     gallery: ['/projects/fitzone.png', '/projects/fitzone.png', '/projects/fitzone.png'],
-    features: ['Modern responsive design', 'Interactive animations', 'Project showcase', 'Contact form', '3D elements'],
-    challenges: ['Implementing complex animations', 'Optimizing performance', 'Creating engaging user experience'],
-    technologies: [
-      { name: 'Next.js', description: 'React framework' },
-      { name: 'Three.js', description: '3D graphics' },
-      { name: 'Framer Motion', description: 'Animation library' },
+    features: [
+      'Comprehensive product catalog management system',
+      'Categories for gym equipment, supplements, and fitness accessories',
+      'Secure payment gateway integration',
+      'Shopping cart functionality for seamless online transactions',
+      'Admin dashboard with inventory management',
+      'Responsive design for all devices',
     ],
-    detailedDescription: 'A modern portfolio website showcasing development skills and projects with engaging animations and interactive elements.',
+    challenges: ['Implementing secure payment gateway integration', 'Building comprehensive product catalog system', 'Creating user-centered design for fitness enthusiasts', 'Optimizing performance for large product databases'],
+    technologies: [
+      { name: 'Laravel', description: 'Full-stack PHP framework for backend development' },
+      { name: 'TailwindCSS', description: 'Utility-first CSS framework for modern styling' },
+      { name: 'MySQL', description: 'Relational database for product and user data' },
+      { name: 'Livewire', description: 'Full-stack framework for dynamic interfaces' },
+      { name: 'Filament', description: 'Admin panel for content and inventory management' },
+    ],
+    detailedDescription:
+      'FitZone E-Commerce Platform is a comprehensive online shopping solution developed for fitness and sports equipment retail in Bandung, Indonesia. The platform serves fitness enthusiasts by providing a complete online shopping experience with modern web technologies. Built using Laravel as the core framework, TailwindCSS for responsive design, MySQL for robust data management, and Livewire for dynamic user interactions. The project features a comprehensive product catalog management system with organized categories for gym equipment, supplements, and fitness accessories, secure payment gateway integration for safe transactions, and an intuitive shopping cart functionality that ensures seamless online shopping experience.',
     githubUrl: '',
-    liveUrl: 'https://portfolio-dzikri.com',
+    liveUrl: 'https://fitzone-ecommerce.com',
   },
 ];
 
